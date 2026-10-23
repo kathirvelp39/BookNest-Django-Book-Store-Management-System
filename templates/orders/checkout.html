@@ -1,0 +1,56 @@
+
+{% extends "base.html" %}
+
+{% block title %}Checkout | BookNest{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4 p-md-5">
+                <h2 class="fw-bold mb-2">Checkout</h2>
+                <p class="text-secondary mb-4">
+                    Confirm your items and delivery address.
+                </p>
+
+                <h5 class="fw-bold mb-3">Order Summary</h5>
+
+                {% for item in cart_items %}
+                <div class="d-flex justify-content-between gap-3 mb-3">
+                    <span>{{ item.book.title }} × {{ item.quantity }}</span>
+                    <span>₹{{ item.subtotal|default_if_none:"0.00" }}</span>
+                </div>
+                {% endfor %}
+
+                <hr>
+                <div class="d-flex justify-content-between fw-bold mb-4">
+                    <span>Total</span>
+                    <span>₹{{ item.book.price|floatformat:2 }}</span>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="{{ form.shipping_address.id_for_label }}"
+                               class="form-label fw-semibold">
+                            Delivery Address
+                        </label>
+                        {{ form.shipping_address }}
+                        {% for error in form.shipping_address.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Place Order
+                    </button>
+                    <a href="{% url 'cart_view' %}"
+                       class="btn btn-outline-secondary">
+                        Back to Cart
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

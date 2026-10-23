@@ -1,0 +1,244 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Profile | BookNest{% endblock %}
+
+{% block content %}
+<style>
+    .profile-page {
+        max-width: 1000px;
+        margin: 20px auto;
+    }
+
+    .profile-banner {
+        background: linear-gradient(120deg, #101b3f, #244fc5, #528bfa);
+        border-radius: 22px;
+        padding: 38px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-banner::after {
+        content: "";
+        position: absolute;
+        width: 230px;
+        height: 230px;
+        border: 35px solid rgba(255,255,255,.08);
+        border-radius: 50%;
+        right: -55px;
+        top: -90px;
+    }
+
+    .profile-avatar {
+        width: 88px;
+        height: 88px;
+        border-radius: 24px;
+        background: white;
+        color: #244fc5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        font-weight: 800;
+        box-shadow: 0 8px 25px rgba(0,0,0,.15);
+        flex-shrink: 0;
+    }
+
+    .profile-panel {
+        background: white;
+        border: 1px solid #e8edf5;
+        border-radius: 20px;
+        padding: 28px;
+        height: 100%;
+        box-shadow: 0 8px 30px rgba(25, 45, 90, .04);
+    }
+
+    .profile-label {
+        color: #7b879d;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 7px;
+    }
+
+    .profile-value {
+        color: #172442;
+        font-size: 15px;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .profile-info {
+        padding: 17px;
+        border-radius: 13px;
+        background: #f7f9fd;
+        border: 1px solid #edf1f8;
+        height: 100%;
+    }
+
+    .profile-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #e8efff;
+        color: #3159c9;
+        margin-bottom: 12px;
+        font-size: 17px;
+    }
+
+    .profile-action {
+        border-radius: 11px;
+        padding: 11px 18px;
+        font-weight: 600;
+    }
+
+    @media (max-width: 576px) {
+        .profile-banner { padding: 25px 20px; }
+        .profile-panel { padding: 20px; }
+        .profile-avatar {
+            width: 68px;
+            height: 68px;
+            font-size: 28px;
+        }
+    }
+</style>
+
+<div class="profile-page">
+
+    <div class="profile-banner mb-4">
+        <div class="d-flex flex-wrap align-items-center gap-4 position-relative"
+             style="z-index: 1;">
+
+            <div class="profile-avatar">
+                {{ user.username|first|upper }}
+            </div>
+
+            <div class="flex-grow-1">
+                <div class="small mb-2" style="color:#dbe6ff;">
+                    BOOKNEST MEMBER ACCOUNT
+                </div>
+                <h2 class="fw-bold mb-2">
+                    Hello, {{ user.username }}!
+                </h2>
+                <p class="mb-0" style="color:#e0e9ff;">
+                    Your reading journey, all in one place.
+                </p>
+            </div>
+
+            <div class="rounded-pill px-3 py-2 small fw-semibold"
+                 style="background:rgba(255,255,255,.15);">
+                ● Active Member
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-12 col-lg-7">
+            <div class="profile-panel">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="profile-icon mb-0">◈</div>
+                    <div>
+                        <h5 class="fw-bold mb-1">Personal Details</h5>
+                        <p class="text-secondary small mb-0">
+                            Your account information
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-12 col-sm-6">
+                        <div class="profile-info">
+                            <div class="profile-label">Username</div>
+                            <div class="profile-value">
+                                {{ user.username }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <div class="profile-info">
+                            <div class="profile-label">Email Address</div>
+                            <div class="profile-value">
+                                {{ user.email|default:"Not provided" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <div class="profile-info">
+                            <div class="profile-label">Phone Number</div>
+                            <div class="profile-value">
+                                {{ user.profile.phone|default:"Not provided" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <div class="profile-info">
+                            <div class="profile-label">Account Status</div>
+                            <div class="profile-value">
+                                {% if user.is_active %}
+                                    <span class="text-success">● Active</span>
+                                {% else %}
+                                    <span class="text-danger">● Inactive</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="profile-info">
+                            <div class="profile-label">Address</div>
+                            <div class="profile-value"
+                                 style="white-space:pre-wrap;">{{ user.profile.address|default:"No address added" }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <div class="profile-panel d-flex flex-column">
+                <div class="profile-icon">✦</div>
+                <h5 class="fw-bold mb-2">Your BookNest Space</h5>
+                <p class="text-secondary small mb-4">
+                    Explore books, discover new authors, and find your next favourite read.
+                </p>
+
+                <a href="{% url 'book_list' %}"
+                   class="btn btn-primary profile-action mb-3">
+                    Explore Book Store →
+                </a>
+
+                <a href="{% url 'category_list' %}"
+                   class="btn btn-outline-primary profile-action mb-4">
+                    Browse Categories
+                </a>
+
+                <div class="mt-auto pt-3 border-top">
+                    <div class="profile-label">Account Security</div>
+                    <p class="small text-secondary mb-3">
+                        Always log out when using a shared computer.
+                    </p>
+
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="btn btn-outline-danger profile-action w-100">
+                            ↗ Logout Securely
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

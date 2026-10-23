@@ -1,0 +1,32 @@
+
+{% extends "base.html" %}
+
+{% block title %}Delete Category | BookNest{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="card auth-card">
+        <h1 class="page-heading">Delete Category</h1>
+
+        <p>
+            Are you sure you want to delete
+            <strong>{{ category.name }}</strong>?
+        </p>
+
+        <p class="text-secondary">
+            If books are linked to this category, Django may prevent deletion.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex flex-wrap gap-2">
+                <button type="submit" class="btn btn-danger">
+                    Confirm Delete
+                </button>
+                <a href="{% url 'category_list' %}"
+                   class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+
+{% extends "base.html" %}
+
+{% block title %}Login | BookNest{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="card auth-card">
+        <h2 class="auth-title">Welcome Back</h2>
+        <p class="auth-description">
+            Sign in to continue to BookNest.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% for error in field.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary w-100 mt-2">
+                Login
+            </button>
+        </form>
+
+        <p class="text-center mt-4 mb-0">
+            Don't have an account?
+            <a href="{% url 'register' %}">Create Account</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

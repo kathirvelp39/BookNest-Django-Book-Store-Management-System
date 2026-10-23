@@ -1,0 +1,59 @@
+
+{% extends "base.html" %}
+
+{% block title %}Categories | BookNest{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <h1 class="page-heading">Categories</h1>
+        <p class="page-subtitle mb-0">Organize your books by category.</p>
+    </div>
+    <a href="{% url 'category_create' %}" class="btn btn-primary">
+        + Add Category
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <strong>All Categories</strong>
+        <span class="badge-soft">{{ categories|length }} categories</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td class="fw-semibold">{{ category.name }}</td>
+                    <td>{{ category.description|default:"—" }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'category_update' category.pk %}"
+                           class="btn btn-outline-primary btn-sm">Edit</a>
+                        <a href="{% url 'category_delete' category.pk %}"
+                           class="btn btn-outline-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📚</div>
+                            <h5>No categories yet</h5>
+                            <p>Create your first category to get started.</p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
